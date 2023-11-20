@@ -5,12 +5,14 @@ import { Link } from "react-router-dom";
 const App = () => {
   const [error, setError] = useState(null);
   const [eleves, setEleves] = useState([]);
-  const [identifiant, setIdentifiant] = useState('')
-  const [nom, setNom] = useState('')
-  const [prenom, setPrenom] = useState('')
-  const [telephone, setTelephone] = useState('')
-  const [email, setEmail] = useState('')
 
+
+  const handleDelete = (deleteID) => {
+    axios
+      .delete("http://localhost:1337/api/eleves")
+      .then(({ data }) => setEleves(data.data))
+      .catch(err => console.log(err))
+};
 
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const App = () => {
       .then(({ data }) => setEleves(data.data))
       .catch((error) => setError(error));
   }, []);
+
 
   if (error) {
     return <div>An error occured: {error.message}</div>;
@@ -36,11 +39,9 @@ const App = () => {
             <table className="mt-10 ml-10"> 
               <thead className=""> 
                 <tr className="">
-                  <th>ID</th>
-                  <th className="px-10">Nom</th>
+                  <th className="">Nom</th>
                   <th>Prenom</th>
-                  <th className="px-10">Telephone</th>
-                  <th>Email</th>
+                  <th className="">Telephone</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -50,15 +51,21 @@ const App = () => {
                   {eleves.map(({ id, attributes }) => (
                     <tr key={id} className="">
 
-                      <td className="">{attributes.identifiant}</td>
-                      <td className="px-10">{attributes.nom}</td>
+                      <td className="">{attributes.nom}</td>
                       <td>{attributes.prenom}</td>
-                      <td className="px-10">{attributes.telephone}</td>
-                      <td>{attributes.email}</td>
+                      <td className="">{attributes.telephone}</td>
+
+
+
 
                       <td className="px-10">
                         <button className="bg-black p-2 rounded-full text-red-500">Editer</button>
-                        <button className="ml-10 bg-black p-2 rounded-full text-red-500" >Supprimer</button>
+
+
+                        <button className="" onClick={() => handleDelete(attributes.prenom)}>
+                            Supprimer
+                        </button>                     
+                        
                       </td>
                       
 

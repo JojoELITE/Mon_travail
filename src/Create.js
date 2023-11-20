@@ -1,97 +1,89 @@
-import Axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-function Create() {
-
-    const [error, setError] = useState(null);
-    const [inputData, setInputData] = useState({
-        "nom": "",
-        "prenom": "",
-        "telephone": "",
-        "email": ""
-    })
-
-    const navigat = useNavigate();
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useCallback, useEffect, useState, useId } from "react";
 
 
+const App = () => {
+  const [error, setError] = useState(null);
+  const [modifiedData, setModifiedData] = useState({
+    nom: "",
+    prenom: "",
+    telephone: "",
+    
+  });
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        console.log(inputData)
-
-        try {
-           const response = await Axios.post('http://localhost:1337/api/eleves', {inputData});
-           console.log('Response de l\'API Strapi :', response.inputData);
-        } 
-        catch(error) {
-            if (error.response) {
-                console.log('reponse du serveur avec erreur:', error.response.inputData);
-            }
-            else if (error.request) {
-                console.log('la requete n\'a plus pu etre affectué:', error.request);
-            }
-            else {
-                console.log('Erreur lors de la requete:', error.message);
-            }
-        }
-    }
+  const handleInputChange = useCallback(({ 
+    target: { name, value } }) => {
+    setModifiedData((prevData) => ({ 
+    ...prevData, [name]: value }));
+  }, []);
 
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setInputData({...inputData, [name]: value});
-    };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .post("http://localhost:1337/api/eleves", { data: modifiedData })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+  };
+
+  if (error) {
+
+    return <div>An error occured: {error.message}</div>;
+  }
+
+  return (
+    <div className="App">
+
+        <Link to='/home'>
+            Home
+        </Link>
 
 
-    return (
-        <div>
-            <form  onSubmit={handleSubmit}>
-
-                <div>
-
-                      <label htmlFor="name"> Nom: </label>
-                      <input type="text" name="nom" id="name"  value={inputData.nom}
-                      onChange={handleChange}/>
-
-                </div>
-
-
-                <div>
-
-                      <label htmlFor="firstname"> Prenom: </label>
-                      <input type="text" name="prenom" id="firstname"   value={inputData.prenom}              
-                      onChange={handleChange}/>
+      <form onSubmit={handleSubmit}>
+            
+        <label>
+          Nom:
+          <input
+            type="text"
+            name="nom"
+            onChange={handleInputChange}
+            value={modifiedData.nom}
+          />
+        </label>
 
 
-                </div>
+        <label>
+          Prenom:
+          <input
+            type="text"
+            name="prenom"
+            onChange={handleInputChange}
+            value={modifiedData.prenom}
+          />
+        </label>
 
+        <label>
+          Telephone:
+          <input
+            type="text"
+            name="telephone"
+            onChange={handleInputChange}
+            value={modifiedData.telephone}
+          />
+        </label>
 
-                <div>
+        <br />
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
+  );
+};
 
-                      <label htmlFor="phone"> telephone: </label>
-                      <input type="text" name="telephone"    id="phone"  value={inputData.telephone}                 
-                      onChange={handleChange}/>
-
-
-                </div>
-
-
-                <div>
-
-                      <label htmlFor="mail"> Email: </label>
-                      <input type="email" name="email" id="mail" value={inputData.email}
-                      onChange={handleChange}/>
-
-
-                </div> <br></br>
-
-
-                <button type="submit">Ajouter</button>
-
-            </form>
-        </div>
-    )
-}
-
-export default Create;
+export default App;
