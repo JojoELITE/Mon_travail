@@ -34,14 +34,14 @@ const App = () => {
   };
 
   if (error) {
-
     return <div>An error occured: {error.message}</div>;
   }
+  
 
   return (
     <div className="App">
 
-        <Link to='/home'>
+        <Link to='/'>
             Home
         </Link>
 

@@ -7,14 +7,6 @@ const App = () => {
   const [eleves, setEleves] = useState([]);
 
 
-  const handleDelete = (deleteID) => {
-    axios
-      .delete("http://localhost:1337/api/eleves")
-      .then(({ data }) => setEleves(data.data))
-      .catch(err => console.log(err))
-};
-
-
   useEffect(() => {
     axios
       .get("http://localhost:1337/api/eleves")
@@ -55,14 +47,11 @@ const App = () => {
                       <td>{attributes.prenom}</td>
                       <td className="">{attributes.telephone}</td>
 
-
-
-
                       <td className="px-10">
                         <button className="bg-black p-2 rounded-full text-red-500">Editer</button>
 
 
-                        <button className="" onClick={() => handleDelete(attributes.prenom)}>
+                        <button className="" onClick={() => (attributes.prenom)}>
                             Supprimer
                         </button>                     
                         
