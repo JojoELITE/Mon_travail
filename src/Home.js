@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 const App = () => {
   const [error, setError] = useState(null);
   const [eleves, setEleves] = useState([]);
+  const [edit, setEdit] = useState(-1); 
+
 
 
   useEffect(() => {
@@ -17,6 +19,11 @@ const App = () => {
 
   if (error) {
     return <div>An error occured: {error.message}</div>;
+  }
+
+
+  const handleEdit = (id) => {
+    setEdit(id)
   }
   
 
@@ -38,9 +45,19 @@ const App = () => {
                 </tr>
               </thead>
 
-              <tbody className="" style={{}}>
+              <tbody className="" style={{ }}>
 
                   {eleves.map(({ id, attributes }) => (
+                    id.id === edit?
+                    <tr>
+                        <td> {id.id} </td>
+                        <td><input type="text" value={id.nom}/></td>
+                        <td><input type="text" value={id.prenom}/></td>
+                        <td><input type="text" value={id.telephone}/></td>
+                        <td><button>Update</button></td>
+                    <tr/>
+                    :
+
                     <tr key={id} className="">
 
                       <td className="">{attributes.nom}</td>

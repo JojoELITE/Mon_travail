@@ -29,7 +29,7 @@ const App = () => {
         console.log(response);
       })
       .catch((error) => {
-        setError(error);
+        setError(error );
       });
   };
 
