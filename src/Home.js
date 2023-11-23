@@ -48,15 +48,6 @@ const App = () => {
               <tbody className="" style={{ }}>
 
                   {eleves.map(({ id, attributes }) => (
-                    id.id === edit?
-                    <tr>
-                        <td> {id.id} </td>
-                        <td><input type="text" value={id.nom}/></td>
-                        <td><input type="text" value={id.prenom}/></td>
-                        <td><input type="text" value={id.telephone}/></td>
-                        <td><button>Update</button></td>
-                    <tr/>
-                    :
 
                     <tr key={id} className="">
 
